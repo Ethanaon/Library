@@ -1,24 +1,48 @@
 #! /usr/bin/env node
 
-console.log('This script populates some test books, authors, genres and bookinstances to your database. Specified database as argument - e.g.: populatedb mongodb://your_username:your_password@your_dabase_url');
+//console.log('This script populates some test books, authors, genres and bookinstances to your database. Specified database as argument - e.g.: populatedb mongodb://your_username:your_password@your_dabase_url');
 
 // Get arguments passed on command line
-var userArgs = process.argv.slice(2);
+/*var userArgs = process.argv.slice(2);
 if (!userArgs[0].startsWith('mongodb://')) {
     console.log('ERROR: You need to specify a valid mongodb URL as the first argument');
     return
-}
+}*/
 
 var async = require('async')
 var Book = require('./models/book')
 var Author = require('./models/author')
 var Genre = require('./models/genre')
 var BookInstance = require('./models/bookinstance')
+var path = require('path');
 
+//load all specific params fr the applicaton in file confi/.env
+const config = require('dotenv').config({path: path.join(__dirname, '/config/.env')})
+if (config.error) {
+  throw config.error
+}
+console.log(config.parsed)
 
+// parameter to acces the databas are defined in the config/.env files
+var dbServer = process.env.dbServer;
+var dbName = process.env.dbName;
+var dbPort = process.env.dbPort;
+var dBUser = process.env.dbUser;
+var dbPass = process.env.dbPassword;
+var mongoDbUrl = 'mongodb://' + dbServer + ':' + dbPort + '/' + dbName;
+const dbOptions = {
+  useNewUrlParser: true,
+  dbName: dbName, 
+  user: dBUser, 
+  pass: dbPass
+};
 var mongoose = require('mongoose');
+mongoose.connect(mongoDbUrl, dbOptions);
+
+
+/*var mongoose = require('mongoose');
 var mongoDB = userArgs[0];
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB);*/
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
