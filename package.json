@@ -10,12 +10,13 @@
   "dependencies": {
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^6.0.0",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "mongoose": "^5.3.0",
     "morgan": "~1.9.0",
     "pug": "2.0.0-beta11",
-    "dotenv": "^6.0.0",
-    "mongoose": "^5.3.0"
+    "serve-favicon": "^2.5.0"
   },
   "author": "BTB <btb@ringwil.eu>",
   "description": "Une applciation de gestion de librairie"
