@@ -8,6 +8,7 @@ var favicon = require('serve-favicon'); // Charge le middleware de favicon
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var catalogRouter = require('./routes/catalog'); //Import routes for "catalog" area of site
 
 //load all specific params fr the applicaton in file confi/.env
 const config = require('dotenv').config({path: path.join(__dirname, '/config/.env')})
@@ -24,10 +25,7 @@ var dbName = process.env.dbName;
 var dbPort = process.env.dbPort;
 var dBUser = process.env.dbUser;
 var dbPass = process.env.dbPassword;
-var author_CollectionName = process.env.author_CollectionName;
-var book_CollectionName = process.env.book_CollectionName;
-var bookInstance_CollectionName = process.env.bookInstance_CollectionName;
-var genre_CollectionName = process.env.genre_CollectionName;
+
 
 //Set up mongoose connection
 //var mongoDbUrl = 'mongodb://' + dBUser + ':' + dbPass + '@' + dbServer + ':' + dbPort + '/' + dbName ;
@@ -59,6 +57,7 @@ app.use(favicon(__dirname + '/public/BTB.ico')); // Active la favicon indiquée
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/catalog', catalogRouter);  // Add catalog routes to middleware chain.
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
