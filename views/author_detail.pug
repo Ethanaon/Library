@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+  h1 #{title}: #{author.name}
+  p #{author.date_of_birth_formatted} - #{author.date_of_death_formatted}
+  
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Books
+    
+    dl
+      each book in author_books
+        dt 
+          a(href=book.url) #{book.title}
+        dd #{book.summary}
+        p #[strong Genre:]&nbsp;
+            each val, index in book.genre
+                a(href=val.url) #{val.name}
+                if index < book.genre.length - 1
+                    |, 
+
+      else
+        p This author has no books.

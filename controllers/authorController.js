@@ -1,15 +1,44 @@
 var Author = require('../models/author');
+var async = require('async');
+var Book = require('../models/book');
 
 // Display list of all Authors.
-exports.author_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: Author list');
-};
+exports.author_list = function(req, res, next) {
 
-// Display detail page for a specific Author.
+    Author.find()
+      .sort([['family_name', 'ascending']])
+      .exec(function (err, list_authors) {
+        if (err) { return next(err); }
+        //Successful, so render
+        res.render('author_list', { title: 'Author List', author_list: list_authors });
+      });
+  
+  };
+
+  // Display detail page for a specific Author.
 exports.author_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Author detail: ' + req.params.id);
-};
+    async.parallel({
+        author: function(callback) {
+            Author.findById(req.params.id)
+              .exec(callback);
+        },
+        author_books: function(callback) {
+          Book.find({ 'author': req.params.id },'title summary')
+          .populate('genre')
+          .exec(callback);
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.author==null) { // No results.
+            var err = new Error('Author not found');
+            err.status = 404;
+            return next(err);
+        }
+        // Successful, so render.
+        res.render('author_detail', { title: 'Author', author:  results.author, author_books: results.author_books } );
+    });
 
+};
 // Display Author create form on GET.
 exports.author_create_get = function(req, res) {
     res.send('NOT IMPLEMENTED: Author create GET');

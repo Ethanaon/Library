@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h1 #{title}: #{book.title}
+  
+  p #[strong Author:] 
+    a(href=book.author.url) #{book.author.name}
+  p #[strong Summary:] #{book.summary}
+  p #[strong ISBN:] #{book.isbn}
+  p #[strong Genre:]&nbsp;
+    each val, index in book.genre
+      a(href=val.url) #{val.name}
+      if index < book.genre.length - 1
+        |, 
+  
+  div(style='margin-left:20px;margin-top:20px')
+    h4 Copy
+    
+    hr
+    if book_instance.status=='Available'
+      p.text-success #{book_instance.status}
+    else if book_instance.status=='Maintenance'
+      p.text-danger #{book_instance.status}
+    else
+      p.text-warning #{book_instance.status} 
+    p #[strong Imprint:] #{book_instance.imprint}
+    if book_instance.status!='Available'
+      p #[strong Due back:] #{book_instance.due_back_formatted}
