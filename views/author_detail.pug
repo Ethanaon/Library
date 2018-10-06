@@ -22,3 +22,12 @@ block content
 
       else
         p This author has no books.
+    hr
+    nav(class='navbar navbar-default')
+        div(class='navbar-collapse collapse')
+          ul(class='nav navbar-nav')
+            li.active
+              a(href=author.url+'/update') Update Author
+            li
+              if author_books.length < 1
+                a(href=author.url+'/delete') Delete Author

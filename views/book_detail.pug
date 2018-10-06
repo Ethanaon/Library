@@ -12,7 +12,16 @@ block content
       a(href=val.url) #{val.name}
       if index < book.genre.length - 1
         |, 
-  
+  hr
+  nav(class='navbar navbar-default')
+      div(class='navbar-collapse collapse')
+        ul(class='nav navbar-nav')
+          li.active
+            a(href=book.url+'/update') Update Book
+          li
+            if book_instances.length < 1
+              a(href=book.url+'/delete') Delete Book
+
   div(style='margin-left:20px;margin-top:20px')
     h4 Copies
     
@@ -29,6 +38,5 @@ block content
         p #[strong Due back:] #{val.due_back_formatted}
       p #[strong Id:]&nbsp;
         a(href=val.url) #{val._id}
- 
     else
       p There are no copies of this book in the library.
