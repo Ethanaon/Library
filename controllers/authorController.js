@@ -1,16 +1,22 @@
 var Author = require('../models/author');
 var async = require('async');
 var Book = require('../models/book');
+var debug = require('debug')('library:author');
+
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all Authors.
 exports.author_list = function(req, res, next) {
 
+    debug('author_list function :' + req.url); 
     Author.find()
       .sort([['family_name', 'ascending']])
       .exec(function (err, list_authors) {
-        if (err) { return next(err); }
+        if (err) { 
+            debug('author_list error:' + err); 
+            return next(err); 
+        }
         //Successful, so render
         res.render('author_list', { title: 'Author List', author_list: list_authors });
       });
@@ -19,6 +25,7 @@ exports.author_list = function(req, res, next) {
 
   // Display detail page for a specific Author.
 exports.author_detail = function(req, res) {
+    debug('author_detail function :' + req.url);
     async.parallel({
         author: function(callback) {
             Author.findById(req.params.id)
@@ -30,10 +37,14 @@ exports.author_detail = function(req, res) {
           .exec(callback);
         },
     }, function(err, results) {
-        if (err) { return next(err); }
+        if (err) { 
+            debug('author_detail 1 error:' + err); 
+            return next(err); 
+        }
         if (results.author==null) { // No results.
             var err = new Error('Author not found');
             err.status = 404;
+            debug('author_detail 2 error:' + err); 
             return next(err);
         }
         // Successful, so render.
@@ -43,12 +54,13 @@ exports.author_detail = function(req, res) {
 };
 // Display Author create form on GET.
 exports.author_create_get = function(req, res) {
+    debug('author_create_get function :' + req.url); 
     res.render('author_form', { title: 'Create Author'});
 };
 
 // Handle Author create on POST.
 exports.author_create_post = [
-
+    
     // Validate fields.
     body('first_name').isLength({ min: 1 }).trim().withMessage('First name must be specified.')
         .isAlphanumeric().withMessage('First name has non-alphanumeric characters.'),
@@ -65,6 +77,8 @@ exports.author_create_post = [
 
     // Process request after validation and sanitization.
     (req, res, next) => {
+        
+        debug('author_create_post function :' + req.url); 
 
         // Extract the validation errors from a request.
         const errors = validationResult(req);
@@ -88,7 +102,10 @@ exports.author_create_post = [
                     date_of_death: req.body.date_of_death
                 });
             author.save(function (err) {
-                if (err) { return next(err); }
+                if (err) { 
+                    debug('author_create_post error:' + err); 
+                    return next(err); 
+                }
                 // Successful - redirect to new author record.
                 res.redirect(author.url);
             });
@@ -98,7 +115,7 @@ exports.author_create_post = [
 
 // Display Author delete form on GET.
 exports.author_delete_get = function(req, res, next) {
-
+    debug('author_delete_get function :' + req.url); 
     async.parallel({
         author: function(callback) {
             Author.findById(req.params.id).exec(callback)
@@ -107,7 +124,10 @@ exports.author_delete_get = function(req, res, next) {
           Book.find({ 'author': req.params.id }).exec(callback)
         },
     }, function(err, results) {
-        if (err) { return next(err); }
+        if (err) { 
+            debug('author_delete_get error:' + err); 
+            return next(err); 
+        }
         if (results.author==null) { // No results.
             res.redirect('/catalog/authors');
         }
@@ -119,7 +139,7 @@ exports.author_delete_get = function(req, res, next) {
 
 // Handle Author delete on POST.
 exports.author_delete_post = function(req, res, next) {
-
+    debug('author_delete_post function :' + req.url); 
     async.parallel({
         author: function(callback) {
           Author.findById(req.body.authorid).exec(callback)
@@ -128,7 +148,10 @@ exports.author_delete_post = function(req, res, next) {
           Book.find({ 'author': req.body.authorid }).exec(callback)
         },
     }, function(err, results) {
-        if (err) { return next(err); }
+        if (err) { 
+            debug('author_delete_post 1 error:' + err); 
+            return next(err); 
+        }
         // Success
         if (results.authors_books.length > 0) {
             // Author has books. Render in same way as for GET route.
@@ -138,7 +161,10 @@ exports.author_delete_post = function(req, res, next) {
         else {
             // Author has no books. Delete object and redirect to the list of authors.
             Author.findByIdAndRemove(req.body.authorid, function deleteAuthor(err) {
-                if (err) { return next(err); }
+                if (err) { 
+                    debug('author_delete_post 2 error:' + err); 
+                    return next(err); 
+                }
                 // Success - go to author list
                 res.redirect('/catalog/authors')
             })
@@ -148,10 +174,12 @@ exports.author_delete_post = function(req, res, next) {
 
 // Display Author update form on GET.
 exports.author_update_get = function(req, res) {
+    debug('author_update_get function :' + req.url); 
     res.send('NOT IMPLEMENTED: Author update GET');
 };
 
 // Handle Author update on POST.
 exports.author_update_post = function(req, res) {
+    debug('author_update_post function :' + req.url)
     res.send('NOT IMPLEMENTED: Author update POST');
 };

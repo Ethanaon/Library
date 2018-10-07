@@ -1,6 +1,8 @@
 var Genre = require('../models/genre');
 var async = require ('async');
 var Book = require('../models/book');
+var debug = require('debug')('library:genre');
+
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
