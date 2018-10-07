@@ -2,7 +2,6 @@ var BookInstance = require('../models/bookinstance');
 var Book = require('../models/book');
 var debug = require('debug')('library:bookinstance');
 
-
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
