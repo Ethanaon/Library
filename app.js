@@ -13,27 +13,31 @@ var usersRouter = require('./routes/users');
 var catalogRouter = require('./routes/catalog'); //Import routes for "catalog" area of site
 
 //load all specific params fr the applicaton in file confi/.env
-const config = require('dotenv').config({path: path.join(__dirname, '/config/.env')})
+/* const config = require('dotenv').config({path: path.join(__dirname, '/config/.env')})
 if (config.error) {
   throw config.error
 }
-console.log(config.parsed)
+console.log(config.parsed);*/
 
 var app = express();
 
 app.use(helmet());
 
 // parameter to acces the databas are defined in the config/.env files
-var dbServer = process.env.dbServer;
+/*var dbServer = process.env.dbServer;
 var dbName = process.env.dbName;
 var dbPort = process.env.dbPort;
 var dBUser = process.env.dbUser;
-var dbPass = process.env.dbPassword;
+var dbPass = process.env.dbPassword;*/
 
 
 //Set up mongoose connection
 //var mongoDbUrl = 'mongodb://' + dBUser + ':' + dbPass + '@' + dbServer + ':' + dbPort + '/' + dbName ;
-var mongoDbUrl = 'mongodb://' + dbServer + ':' + dbPort + '/' + dbName;
+//var mongoDbUrl = 'mongodb://' + dbServer + ':' + dbPort + '/' + dbName;
+var mongoDB = process.env.MONGODB_URI;
+var dbName = process.env.dbName;
+var dBUser = process.env.dbUser;
+var dbPass = process.env.dbPassword;
 
 const dbOptions = {
   useNewUrlParser: true,
