@@ -42,8 +42,8 @@ var dbPass = process.env.dbPassword;
 const dbOptions = {
   useNewUrlParser: true,
   dbName: dbName, 
-  user: dBUser, 
-  pass: dbPass
+//  user: dBUser, 
+//  pass: dbPass
 };
 var mongoose = require('mongoose');
 mongoose.connect(mongoDbUrl, dbOptions);
