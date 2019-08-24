@@ -34,7 +34,7 @@ var dbPass = process.env.dbPassword;*/
 //Set up mongoose connection
 //var mongoDbUrl = 'mongodb://' + dBUser + ':' + dbPass + '@' + dbServer + ':' + dbPort + '/' + dbName ;
 //var mongoDbUrl = 'mongodb://' + dbServer + ':' + dbPort + '/' + dbName;
-var mongoDB = process.env.MONGODB_URI;
+var mongoDbUrl = process.env.MONGODB_URI || 'mongodb://btb1:C3YE8fhydrZK36CqgClM@ds225543.mlab.com:25543/library_dev';
 var dbName = process.env.dbName;
 var dBUser = process.env.dbUser;
 var dbPass = process.env.dbPassword;
@@ -42,8 +42,8 @@ var dbPass = process.env.dbPassword;
 const dbOptions = {
   useNewUrlParser: true,
   dbName: dbName, 
-  user: dBUser, 
-  pass: dbPass
+//  user: dBUser, 
+//  pass: dbPass
 };
 var mongoose = require('mongoose');
 mongoose.connect(mongoDbUrl, dbOptions);
