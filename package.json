@@ -23,7 +23,7 @@
     "moment": "^2.24.0",
     "mongoose": "^5.6.10",
     "morgan": "~1.9.0",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "serve-favicon": "^2.5.0"
   },
   "author": "BTB <btb@ringwil.eu>",
